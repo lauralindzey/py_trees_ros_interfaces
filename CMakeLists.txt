@@ -17,64 +17,129 @@ endif()
 # Dependencies
 ##############################################################################
 
-find_package(ament_cmake REQUIRED)
-find_package(builtin_interfaces REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
-find_package(action_msgs REQUIRED)
-find_package(diagnostic_msgs REQUIRED)
-find_package(geometry_msgs REQUIRED)
-find_package(unique_identifier_msgs REQUIRED)
+# find_package(ament_cmake REQUIRED)
+# find_package(builtin_interfaces REQUIRED)
+# find_package(rosidl_default_generators REQUIRED)
+# find_package(action_msgs REQUIRED)
+# find_package(diagnostic_msgs REQUIRED)
+# find_package(geometry_msgs REQUIRED)
+# find_package(unique_identifier_msgs REQUIRED)
+
+find_package(catkin REQUIRED COMPONENTS
+    message_generation
+    actionlib_msgs
+    diagnostic_msgs
+    geometry_msgs
+    uuid_msgs
+)
 
 ##############################################################################
 # Messages
 ##############################################################################
 
-set(action_files
-  "action/Dock.action"
-  "action/Rotate.action"
-  "action/MoveBase.action"
+# set(action_files
+#   "action/Dock.action"
+#   "action/Rotate.action"
+#   "action/MoveBase.action"
+# )
+
+add_action_files(
+  DIRECTORY
+    action
+  FILES
+    Dock.action
+    Rotate.action
+    MoveBase.action
 )
 
-set(msg_files
-  "msg/ActivityItem.msg"
-  "msg/Behaviour.msg"
-  "msg/BehaviourTree.msg"
-  "msg/KeyValue.msg"
-  "msg/PublisherDetails.msg"
-  "msg/Statistics.msg"
-  "msg/ServiceDetails.msg"
-  "msg/SnapshotStreamParameters.msg"
-  "msg/SubscriberDetails.msg"
+# set(msg_files
+#   "msg/ActivityItem.msg"
+#   "msg/Behaviour.msg"
+#   "msg/BehaviourTree.msg"
+#   "msg/KeyValue.msg"
+#   "msg/PublisherDetails.msg"
+#   "msg/Statistics.msg"
+#   "msg/ServiceDetails.msg"
+#   "msg/SnapshotStreamParameters.msg"
+#   "msg/SubscriberDetails.msg"
+# )
+
+add_message_files(
+  DIRECTORY
+    msg
+  FILES
+    ActivityItem.msg
+    Behaviour.msg
+    BehaviourTree.msg
+    KeyValue.msg
+    PublisherDetails.msg
+    Statistics.msg
+    ServiceDetails.msg
+    SnapshotStreamParameters.msg
+    SubscriberDetails.msg
 )
 
-set(srv_files
-  "srv/CloseBlackboardStream.srv"
-  "srv/CloseSnapshotStream.srv"
-  "srv/GetBlackboardVariables.srv"
-  "srv/IntrospectPublishers.srv"
-  "srv/IntrospectServices.srv"
-  "srv/IntrospectSubscribers.srv"
-  "srv/OpenBlackboardStream.srv"
-  "srv/OpenSnapshotStream.srv"
-  "srv/ReconfigureSnapshotStream.srv"
-  "srv/StatusReport.srv"
+# set(srv_files
+#   "srv/CloseBlackboardStream.srv"
+#   "srv/CloseSnapshotStream.srv"
+#   "srv/GetBlackboardVariables.srv"
+#   "srv/IntrospectPublishers.srv"
+#   "srv/IntrospectServices.srv"
+#   "srv/IntrospectSubscribers.srv"
+#   "srv/OpenBlackboardStream.srv"
+#   "srv/OpenSnapshotStream.srv"
+#   "srv/ReconfigureSnapshotStream.srv"
+#   "srv/StatusReport.srv"
+# )
+
+add_service_files(
+  DIRECTORY
+    srv
+  FILES
+    CloseBlackboardStream.srv
+    CloseSnapshotStream.srv
+    GetBlackboardVariables.srv
+    IntrospectPublishers.srv
+    IntrospectServices.srv
+    IntrospectSubscribers.srv
+    OpenBlackboardStream.srv
+    OpenSnapshotStream.srv
+    ReconfigureSnapshotStream.srv
+    StatusReport.srv
 )
 
-rosidl_generate_interfaces(${PROJECT_NAME}
-  ${srv_files}
-  ${msg_files}
-  ${action_files}
-  DEPENDENCIES
-    action_msgs  # even though not directly using, it requires some trace back
-    diagnostic_msgs
-    geometry_msgs
-    unique_identifier_msgs
-  # ADD_LINTER_TESTS  # very expensive
+# rosidl_generate_interfaces(${PROJECT_NAME}
+#   ${srv_files}
+#   ${msg_files}
+#   ${action_files}
+#   DEPENDENCIES
+#     action_msgs  # even though not directly using, it requires some trace back
+#     diagnostic_msgs
+#     geometry_msgs
+#     unique_identifier_msgs
+#   # ADD_LINTER_TESTS  # very expensive
+# )
+
+generate_messages(DEPENDENCIES
+  actionlib_msgs
+  diagnostic_msgs
+  geometry_msgs
+  std_msgs
+  uuid_msgs
 )
+
 ##############################################################################
 # Package
 ##############################################################################
 
-ament_export_dependencies(rosidl_default_runtime)
+# ament_export_dependencies(rosidl_default_runtime)
+# ament_package()
 
-ament_package()
+catkin_package(CATKIN_DEPENDS
+  message_runtime
+  actionlib_msgs
+  diagnostic_msgs
+  geometry_msgs
+  std_msgs
+  uuid_msgs
+)
