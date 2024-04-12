@@ -1,6 +1,6 @@
 
 int64 count
-builtin_interfaces/Time stamp
+std_msgs/Time stamp
 
 float32 tick_duration
 float32 tick_duration_average
